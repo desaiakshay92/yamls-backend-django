@@ -4,6 +4,7 @@ metadata:
   name: {{ include "django-app.fullname" . }}
   labels:
     {{- include "django-app.labels" . | nindent 4 }}
+  namespace: default
 spec:
   type: {{ .Values.service.type }}
   ports:
