@@ -128,3 +128,10 @@ db:
   host: "postgres-service.postgres-ns.svc.cluster.local"
   port: "5432"
   password: "postgres"
+
+logVolume:
+  name: django-logs
+  mountPath: /app-log   # Path inside the container where logs are written
+  hostPath:
+    path: /var/log/django-logs   # Path on the host machine (adjust this as per your requirements)
+    type: DirectoryOrCreate    # Creates the directory on the host if it doesn't exist 
