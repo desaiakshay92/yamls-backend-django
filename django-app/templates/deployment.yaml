@@ -46,31 +46,31 @@ spec:
               containerPort: {{ .Values.service.port }}
               protocol: TCP
           env:
-          - name: DB_NAME
-            valueFrom:
-              configMapKeyRef:
-                name: {{ .Release.Name }}-db-config
-                key: DB_NAME
-          - name: DB_USER
-            valueFrom:
-              configMapKeyRef:
-                name: {{ .Release.Name }}-db-config
-                key: DB_USER
-          - name: DB_HOST
-            valueFrom:
-              configMapKeyRef:
-                name: {{ .Release.Name }}-db-config
-                key: DB_HOST
-          - name: DB_PORT
-            valueFrom:
-              configMapKeyRef:
-                name: {{ .Release.Name }}-db-config
-                key: DB_PORT
-          - name: DB_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: {{ .Release.Name }}-db-secret
-                key: DB_PASSWORD
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-db-config
+                  key: DB_NAME
+            - name: DB_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-db-config
+                  key: DB_USER
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-db-config
+                  key: DB_HOST
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-db-config
+                  key: DB_PORT
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-db-secret
+                  key: DB_PASSWORD
           {{- with .Values.livenessProbe }}
           livenessProbe:
             {{- toYaml . | nindent 12 }}
@@ -83,21 +83,14 @@ spec:
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- with .Values.volumeMounts }}
           volumeMounts:
             - name: {{ .Values.logVolume.name }}
               mountPath: {{ .Values.logVolume.mountPath }}  # Path inside the container, i.e., /app-log
-
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-      {{- with .Values.volumes }}
       volumes:
         - name: {{ .Values.logVolume.name }}
           hostPath:
             path: {{ .Values.logVolume.hostPath.path }}  # Path on the host machine
             type: {{ .Values.logVolume.hostPath.type }}  # DirectoryOrCreate ensures the directory exists
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
